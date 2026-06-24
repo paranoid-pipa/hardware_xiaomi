@@ -424,6 +424,9 @@ class DolbyRepository(private val context: Context) : AutoCloseable {
 
     fun getVolumeLevelerEnabled(profile: Int): Boolean {
         if (!volumeLevelerSupported) return false
+        if (profile == 0) {
+            return getProfilePrefs(0).getBoolean(DolbyConstants.PREF_VOLUME, false)
+        }
         return try {
             dolbyEffect.getDapParameterBool(DsParam.VOLUME_LEVELER_ENABLE, profile)
         } catch (e: Exception) {
